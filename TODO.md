@@ -8,7 +8,7 @@
 - [x] Stage 5: Add Redis caching and PostgreSQL fallback.
 - [x] Stage 6: Add click analytics.
 - [x] Stage 7: Complete and harden the REST API.
-- [ ] Stage 8: Add the minimal React frontend and CORS wiring.
+- [x] Stage 8: Add the minimal React frontend and CORS wiring.
 - [ ] Stage 9: Expand behavior-focused tests.
 - [ ] Stage 10: Add Docker and Docker Compose setup.
 - [ ] Stage 11: Review performance, security, and scalability.
@@ -55,3 +55,10 @@
 - `GET /api/v1/urls/{short_code}` returns active URL details.
 - `DELETE /api/v1/urls/{short_code}` soft-deletes mappings and invalidates Redis.
 - Unexpected database errors use a safe `503` response.
+
+## Stage 8 notes
+
+- Run `npm install` and `npm run dev` from `frontend`.
+- Set `VITE_API_BASE_URL` when the backend is not at `http://localhost:8000`.
+- The frontend production build passes with `npm run build`.
+- CORS preflight for `http://localhost:5173` passes.

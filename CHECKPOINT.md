@@ -1,10 +1,10 @@
-# CHECKPOINT 7 - COMPLETE
+# CHECKPOINT 8 - COMPLETE
 
 ## Current checkpoint
 
-- **Stage:** 7 - REST API Completion
+- **Stage:** 8 - Minimal React Frontend
 - **Status:** Complete
-- **Suggested commit:** `feat: complete REST API`
+- **Suggested commit:** `feat: add minimal React frontend`
 
 ## Working features
 
@@ -41,6 +41,9 @@
 - `DELETE /api/v1/urls/{short_code}` performs a soft delete and invalidates Redis.
 - API short-code validation consistently returns `404` for malformed or missing resources.
 - Unexpected SQLAlchemy failures return a safe `503` response without internal database details.
+- React frontend supports URL shortening, copy-to-clipboard, analytics loading, errors, and loading states.
+- Vite frontend configuration uses `VITE_API_BASE_URL` with a localhost backend default.
+- FastAPI CORS allows configured comma-separated origins, including the Vite development origin.
 
 ## Files created
 
@@ -63,6 +66,15 @@
 - `backend/app/cache/redis.py`
 - `backend/app/api/routes/analytics.py`
 - `backend/tests/test_rest_api.py`
+- `frontend/package.json`
+- `frontend/package-lock.json`
+- `frontend/index.html`
+- `frontend/vite.config.js`
+- `frontend/.env.example`
+- `frontend/src/main.jsx`
+- `frontend/src/api.js`
+- `frontend/src/App.jsx`
+- `frontend/src/styles.css`
 - `backend/app/api/__init__.py`
 - `backend/app/api/routes/__init__.py`
 - `backend/tests/__init__.py`
@@ -118,12 +130,11 @@ curl.exe -X POST http://127.0.0.1:8000/api/v1/urls `
 
 ## Known limitations
 
-- No React frontend yet.
-- CORS is represented in configuration but is not wired until the frontend stage.
+- No Docker deployment yet.
 - A live PostgreSQL integration test is still pending.
 - URL creation requires PostgreSQL because the short-code source is the database sequence.
 - Live PostgreSQL and Redis integration checks are still pending.
 
 ## Next stage
 
-Stage 8 will add the minimal React frontend and CORS wiring.
+Stage 9 will expand behavior-focused tests, including frontend and integration coverage.

@@ -21,6 +21,7 @@ The current implementation includes:
 - Redis cache-aside lookup with PostgreSQL fallback
 - Click event recording and analytics aggregation
 - URL detail retrieval and soft deletion
+- Minimal React frontend for shortening and analytics
 
 Frontend functionality is intentionally scheduled for later checkpoints.
 
@@ -83,3 +84,15 @@ Each redirect records a `click_events` row with the URL ID, timestamp, user-agen
 - `GET /{short_code}`: redirect to the active original URL.
 
 Deletion is intentionally a soft delete: it sets `is_active` to false, prevents future redirects, removes the cache entry, and preserves the URL row and click history for analytics. Unexpected database failures return a stable `503` response without exposing internal database details.
+
+## Frontend
+
+From the `frontend` directory:
+
+```powershell
+npm install
+Copy-Item .env.example .env
+npm run dev
+```
+
+The Vite client runs at <http://localhost:5173> and calls the FastAPI backend at `VITE_API_BASE_URL` (default `http://localhost:8000`). It supports URL creation, copying the generated link, loading analytics, and visible loading/error states. FastAPI allows the Vite origin through `ALLOWED_ORIGINS`.
