@@ -1,10 +1,10 @@
-# CHECKPOINT 11 - COMPLETE
+# CHECKPOINT 12 - COMPLETE
 
 ## Current checkpoint
 
-- **Stage:** 11 - Performance and Engineering Improvements
+- **Stage:** 12 - Final Documentation
 - **Status:** Complete
-- **Suggested commit:** `perf: tune pooling caching and analytics indexes`
+- **Suggested commit:** `docs: complete project documentation and report`
 
 ## Working features
 
@@ -54,6 +54,8 @@
 - Redis socket timeouts fail fast while retaining PostgreSQL fallback behavior.
 - A composite analytics index supports filtering by URL and sorting recent events.
 - A reproducible Base62 micro-benchmark reports local utility performance without claiming end-to-end throughput.
+- README contains setup, architecture, tech stack, structure, API, database, Redis, testing, performance, security, and future-work documentation.
+- `docs/PROJECT_REPORT.md` provides the complete technical report and interview study checklist.
 
 ## Files created
 
@@ -118,6 +120,7 @@
 - `README.md`
 - `CHECKPOINT.md`
 - `TODO.md`
+- `docs/PROJECT_REPORT.md`
 
 ## How to run
 
@@ -156,7 +159,8 @@ curl.exe -X POST http://127.0.0.1:8000/api/v1/urls `
 - Live PostgreSQL and Redis integration checks are still pending.
 - Docker image build was not run successfully in this environment because Docker Desktop's Linux engine was unavailable.
 - The benchmark measures Base62 utility throughput only; no HTTP load-test claim is made.
+- Live PostgreSQL/Redis integration and Docker image execution remain environment-dependent.
 
 ## Next stage
 
-Stage 12 will complete the professional README and technical project report.
+The staged implementation and documentation are complete. Future work is listed in the README and project report.

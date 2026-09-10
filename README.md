@@ -10,22 +10,44 @@ The current implementation includes:
 
 - FastAPI application with automatic OpenAPI documentation
 - Environment-backed configuration using Pydantic Settings
-- Basic startup and shutdown logging
-- `GET /health` health-check endpoint
-- Initial pytest setup
-- Async SQLAlchemy engine and session dependency
-- PostgreSQL URL and click-event schema with an Alembic migration
-- Base62 encoding and PostgreSQL-sequence-backed short-code generation
-- `POST /api/v1/urls` for validated URL creation
-- `GET /{short_code}` for PostgreSQL-backed redirection
-- Redis cache-aside lookup with PostgreSQL fallback
-- Click event recording and analytics aggregation
-- URL detail retrieval and soft deletion
-- Minimal React frontend for shortening and analytics
 
-Frontend functionality is intentionally scheduled for later checkpoints.
+## Database Design
 
-## Stage 1 Setup
+- Compact Base62 short-code generation.
+- PostgreSQL-backed URL mappings and click events.
+- Redis cache-aside redirect lookup with graceful fallback.
+## Redirection
+- Soft deletion with cache invalidation.
+- Minimal React client with copy and analytics actions.
+- Async database access, migrations, validation, tests, and Docker Compose.
+
+## Tech Stack
+
+- **Backend:** Python, FastAPI, Pydantic Settings, SQLAlchemy 2 async, asyncpg, Alembic.
+- **Data services:** PostgreSQL 17 and Redis 7.
+- **Frontend:** React, Vite, Fetch API.
+- **Testing:** pytest, pytest-asyncio, Vitest, React Testing Library.
+- **Operations:** Docker and Docker Compose.
+
+## Project Structure
+
+```text
+backend/app/       FastAPI routes, services, models, schemas, cache, and database setup
+backend/alembic/   PostgreSQL migrations
+backend/tests/     Backend behavior tests
+frontend/src/      React application and API client
+docs/              Technical project report
+docker-compose.yml Local PostgreSQL, Redis, backend, and frontend stack
+```
+## Redis Caching Strategy
+## Prerequisites
+
+- Python 3.13+
+- Node.js 24+ and npm
+## Analytics
+- Docker Desktop for Compose execution
+
+## Installation
 
 From the `backend` directory, create and activate a virtual environment, then install dependencies:
 
@@ -43,6 +65,10 @@ For the database-backed stages, PostgreSQL must be running and the database name
 alembic upgrade head
 ```
 
+## Running PostgreSQL and Redis
+
+## Example API Requests and Responses
+
 Start the development server:
 
 ```powershell
@@ -51,7 +77,9 @@ uvicorn app.main:app --reload
 
 Check the service at <http://127.0.0.1:8000/health> or open the interactive API documentation at <http://127.0.0.1:8000/docs>.
 
-Run the tests:
+## Testing
+
+Run backend tests:
 
 ```powershell
 pytest
@@ -82,6 +110,32 @@ See [CHECKPOINT.md](CHECKPOINT.md) for the exact state and [TODO.md](TODO.md) fo
 ## Stage 2 Database Design
 
 PostgreSQL is the source of truth. The `urls` table stores each short-code mapping, its lifecycle state, timestamps, and a denormalized click counter. The `click_events` table stores lightweight analytics events linked to `urls.id` with a foreign key. The unique index on `urls.short_code` makes redirect lookup and collision prevention efficient; indexes on `click_events.url_id` and `clicked_at` support per-link and time-based analytics queries.
+
+## Environment Variables
+
+Backend variables are documented in [backend/.env.example](backend/.env.example). Important values are `DATABASE_URL`, `REDIS_URL`, `PUBLIC_BASE_URL`, `ALLOWED_ORIGINS`, `REDIS_TTL_SECONDS`, and the database pool settings. Frontend configuration is documented in [frontend/.env.example](frontend/.env.example); `VITE_API_BASE_URL` selects the FastAPI origin.
+
+## API Examples
+
+Create a short URL:
+
+```http
+POST /api/v1/urls
+Content-Type: application/json
+
+{"url":"https://example.com/docs"}
+```
+
+```json
+{
+	"short_code": "1",
+	"short_url": "http://localhost:8000/1",
+	"original_url": "https://example.com/docs",
+	"created_at": "2026-09-10T12:00:00Z"
+}
+```
+
+Redirect with `GET /1`, inspect with `GET /api/v1/urls/1`, inspect analytics with `GET /api/v1/urls/1/analytics`, and soft-delete with `DELETE /api/v1/urls/1`.
 
 ## Stage 4 Redirection
 
@@ -134,3 +188,15 @@ docker compose down
 ```
 
 Add `-v` to remove the persisted PostgreSQL and Redis volumes when a clean local database is required.
+
+## Documentation
+
+See [docs/PROJECT_REPORT.md](docs/PROJECT_REPORT.md) for the complete architecture, algorithms, database design, testing strategy, scalability discussion, security considerations, and limitations.
+
+## Future Improvements
+
+Authentication, rate limiting, abuse prevention, asynchronous analytics ingestion, observability, live integration tests, and production HTTPS deployment are described in the project report.
+
+## Author / Project Information
+
+This is a portfolio and interview-study project demonstrating practical backend engineering with FastAPI, PostgreSQL, Redis, REST APIs, caching, analytics, React, migrations, tests, and containerized local development.

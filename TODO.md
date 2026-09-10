@@ -12,7 +12,7 @@
 - [x] Stage 9: Expand behavior-focused tests.
 - [x] Stage 10: Add Docker and Docker Compose setup.
 - [x] Stage 11: Review performance, security, and scalability.
-- [ ] Stage 12: Complete README and `docs/PROJECT_REPORT.md`.
+- [x] Stage 12: Complete README and `docs/PROJECT_REPORT.md`.
 
 ## Stage 1 notes
 
@@ -81,3 +81,8 @@
 - Redis socket timeout defaults to 0.5 seconds.
 - Migration `0002_add_analytics_lookup_index` adds the recent-event lookup index.
 - Run `python -m scripts.benchmark_base62` from `backend` for the local micro-benchmark.
+
+## Stage 12 notes
+
+- Final README documents setup, architecture, API, database, caching, testing, performance, security, and future work.
+- `docs/PROJECT_REPORT.md` is the concise interview-study report for the implementation.
