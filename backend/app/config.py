@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     api_prefix: str = "/api/v1"
     allowed_origins: str = "http://localhost:5173"
+    public_base_url: str = "http://localhost:8000"
     database_url: str = (
         "postgresql+asyncpg://url_shortener:url_shortener@localhost:5432/"
         "url_shortener"

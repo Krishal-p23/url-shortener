@@ -5,6 +5,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
+from app.api.router import api_router
 from app.config import get_settings
 
 
@@ -36,9 +37,10 @@ settings = get_settings()
 app = FastAPI(
     title=settings.app_name,
     version="0.2.0",
-    description="Stage 2 foundation for a distributed URL shortener.",
+    description="Stage 3 URL creation API with PostgreSQL-backed Base62 codes.",
     lifespan=lifespan,
 )
+app.include_router(api_router)
 
 
 @app.get("/health", tags=["system"])

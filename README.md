@@ -15,6 +15,8 @@ Stage 1 establishes the backend application foundation:
 - Initial pytest setup
 - Async SQLAlchemy engine and session dependency
 - PostgreSQL URL and click-event schema with an Alembic migration
+- Base62 encoding and PostgreSQL-sequence-backed short-code generation
+- `POST /api/v1/urls` for validated URL creation
 
 Redis, URL shortening, redirect handling, analytics endpoints, and frontend functionality are intentionally scheduled for later checkpoints.
 

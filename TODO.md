@@ -3,7 +3,7 @@
 ## Remaining stages
 
 - [x] Stage 2: Integrate PostgreSQL, SQLAlchemy, and Alembic.
-- [ ] Stage 3: Add Base62 encoding and URL creation.
+- [x] Stage 3: Add Base62 encoding and URL creation.
 - [ ] Stage 4: Add short-code redirection.
 - [ ] Stage 5: Add Redis caching and PostgreSQL fallback.
 - [ ] Stage 6: Add click analytics.
@@ -24,3 +24,9 @@
 - Set `DATABASE_URL` to a reachable PostgreSQL database before running migrations.
 - Run `alembic upgrade head` from `backend` to create the `urls` and `click_events` tables.
 - PostgreSQL is the source of truth; Redis will be introduced as a cache in Stage 5.
+
+## Stage 3 notes
+
+- `POST /api/v1/urls` validates HTTP and HTTPS URLs with Pydantic.
+- Short codes encode PostgreSQL sequence IDs with Base62 characters `0-9A-Za-z`.
+- The live URL creation flow requires PostgreSQL and the Stage 2 migration.
