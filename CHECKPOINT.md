@@ -1,10 +1,10 @@
-# CHECKPOINT 10 - COMPLETE
+# CHECKPOINT 11 - COMPLETE
 
 ## Current checkpoint
 
-- **Stage:** 10 - Dockerization
+- **Stage:** 11 - Performance and Engineering Improvements
 - **Status:** Complete
-- **Suggested commit:** `feat: add Docker Compose deployment`
+- **Suggested commit:** `perf: tune pooling caching and analytics indexes`
 
 ## Working features
 
@@ -50,6 +50,10 @@
 - PostgreSQL and Redis have health checks; backend startup waits for both.
 - The backend container runs Alembic migrations before starting Uvicorn.
 - PostgreSQL and Redis data persist in named Docker volumes.
+- Database connection pooling is configurable with bounded defaults.
+- Redis socket timeouts fail fast while retaining PostgreSQL fallback behavior.
+- A composite analytics index supports filtering by URL and sorting recent events.
+- A reproducible Base62 micro-benchmark reports local utility performance without claiming end-to-end throughput.
 
 ## Files created
 
@@ -108,6 +112,8 @@
 - `backend/alembic/env.py`
 - `backend/alembic/script.py.mako`
 - `backend/alembic/versions/0001_create_url_tables.py`
+- `backend/alembic/versions/0002_add_analytics_lookup_index.py`
+- `backend/scripts/benchmark_base62.py`
 - `.gitignore`
 - `README.md`
 - `CHECKPOINT.md`
@@ -149,7 +155,8 @@ curl.exe -X POST http://127.0.0.1:8000/api/v1/urls `
 - URL creation requires PostgreSQL because the short-code source is the database sequence.
 - Live PostgreSQL and Redis integration checks are still pending.
 - Docker image build was not run successfully in this environment because Docker Desktop's Linux engine was unavailable.
+- The benchmark measures Base62 utility throughput only; no HTTP load-test claim is made.
 
 ## Next stage
 
-Stage 11 will review performance, security, and scalability.
+Stage 12 will complete the professional README and technical project report.

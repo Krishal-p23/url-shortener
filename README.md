@@ -67,6 +67,16 @@ npm run build
 
 The test suite covers Base62, URL validation and creation, redirect cache behavior, Redis degradation, analytics, soft deletion, safe API errors, CORS preflight, and the frontend shortening/analytics flow.
 
+## Performance Considerations
+
+- SQLAlchemy uses a bounded async pool: 10 persistent connections, up to 20 overflow connections, and a 30-second acquisition timeout by default.
+- Redis connections fail fast with a 0.5-second socket timeout, preserving PostgreSQL fallback behavior during cache outages.
+- `urls.short_code` is unique and indexed for redirect/detail lookups.
+- `click_events` has a composite `(url_id, clicked_at)` index for recent per-link analytics.
+- The local Base62 benchmark can be run with `python -m scripts.benchmark_base62` from `backend`. On the development machine used for this checkpoint it completed 100,000 encodes in 0.0721 seconds, approximately 1,387,783 operations/second. This is a utility micro-benchmark, not an end-to-end service performance claim.
+
+At higher traffic, stateless FastAPI instances can scale horizontally behind a load balancer. Redis absorbs hot redirect reads, PostgreSQL remains the source of truth, and analytics can later move to asynchronous ingestion or a separate reporting store if click volume becomes the dominant workload.
+
 See [CHECKPOINT.md](CHECKPOINT.md) for the exact state and [TODO.md](TODO.md) for the remaining stages.
 
 ## Stage 2 Database Design

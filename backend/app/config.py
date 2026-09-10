@@ -16,6 +16,10 @@ class Settings(BaseSettings):
     public_base_url: str = "http://localhost:8000"
     redis_url: str = "redis://localhost:6379/0"
     redis_ttl_seconds: int = 3600
+    redis_timeout_seconds: float = 0.5
+    db_pool_size: int = 10
+    db_max_overflow: int = 20
+    db_pool_timeout_seconds: int = 30
     database_url: str = (
         "postgresql+asyncpg://url_shortener:url_shortener@localhost:5432/"
         "url_shortener"

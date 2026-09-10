@@ -12,7 +12,12 @@ from app.config import get_settings
 
 logger = logging.getLogger(__name__)
 settings = get_settings()
-redis_client = Redis.from_url(settings.redis_url, decode_responses=True)
+redis_client = Redis.from_url(
+    settings.redis_url,
+    decode_responses=True,
+    socket_connect_timeout=settings.redis_timeout_seconds,
+    socket_timeout=settings.redis_timeout_seconds,
+)
 
 
 @dataclass(frozen=True)

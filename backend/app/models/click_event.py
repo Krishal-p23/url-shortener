@@ -2,7 +2,7 @@
 
 from datetime import datetime
 
-from sqlalchemy import DateTime, ForeignKey, Integer, String, Text, func
+from sqlalchemy import DateTime, ForeignKey, Index, Integer, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
@@ -12,6 +12,13 @@ class ClickEvent(Base):
     """A lightweight event recorded when a short URL is visited."""
 
     __tablename__ = "click_events"
+    __table_args__ = (
+        Index(
+            "ix_click_events_url_id_clicked_at",
+            "url_id",
+            "clicked_at",
+        ),
+    )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     url_id: Mapped[int] = mapped_column(

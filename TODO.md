@@ -11,7 +11,7 @@
 - [x] Stage 8: Add the minimal React frontend and CORS wiring.
 - [x] Stage 9: Expand behavior-focused tests.
 - [x] Stage 10: Add Docker and Docker Compose setup.
-- [ ] Stage 11: Review performance, security, and scalability.
+- [x] Stage 11: Review performance, security, and scalability.
 - [ ] Stage 12: Complete README and `docs/PROJECT_REPORT.md`.
 
 ## Stage 1 notes
@@ -74,3 +74,10 @@
 - Validate the stack with `docker compose config`.
 - Start it with `docker compose up --build` from the repository root.
 - Docker image build requires Docker Desktop's Linux engine to be running.
+
+## Stage 11 notes
+
+- DB pool defaults: size 10, overflow 20, acquisition timeout 30 seconds.
+- Redis socket timeout defaults to 0.5 seconds.
+- Migration `0002_add_analytics_lookup_index` adds the recent-event lookup index.
+- Run `python -m scripts.benchmark_base62` from `backend` for the local micro-benchmark.
