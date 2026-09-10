@@ -13,6 +13,7 @@
 - [x] Stage 10: Add Docker and Docker Compose setup.
 - [x] Stage 11: Review performance, security, and scalability.
 - [x] Stage 12: Complete README and `docs/PROJECT_REPORT.md`.
+- [x] Stage 13: Perform final quality review and sign-off.
 
 ## Stage 1 notes
 
@@ -86,3 +87,8 @@
 
 - Final README documents setup, architecture, API, database, caching, testing, performance, security, and future work.
 - `docs/PROJECT_REPORT.md` is the concise interview-study report for the implementation.
+
+## Stage 13 notes
+
+- Final sign-off is recorded in `docs/QUALITY_REVIEW.md`.
+- Runtime-dependent PostgreSQL, Redis, and Docker checks remain explicitly listed there.

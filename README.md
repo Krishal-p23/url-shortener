@@ -193,6 +193,8 @@ Add `-v` to remove the persisted PostgreSQL and Redis volumes when a clean local
 
 See [docs/PROJECT_REPORT.md](docs/PROJECT_REPORT.md) for the complete architecture, algorithms, database design, testing strategy, scalability discussion, security considerations, and limitations.
 
+The final repository quality review is recorded in [docs/QUALITY_REVIEW.md](docs/QUALITY_REVIEW.md).
+
 ## Future Improvements
 
 Authentication, rate limiting, abuse prevention, asynchronous analytics ingestion, observability, live integration tests, and production HTTPS deployment are described in the project report.

@@ -1,10 +1,10 @@
-# CHECKPOINT 12 - COMPLETE
+# CHECKPOINT 13 - COMPLETE
 
 ## Current checkpoint
 
-- **Stage:** 12 - Final Documentation
+- **Stage:** 13 - Final Quality Review
 - **Status:** Complete
-- **Suggested commit:** `docs: complete project documentation and report`
+- **Suggested commit:** `review: complete final quality sign-off`
 
 ## Working features
 
@@ -56,6 +56,7 @@
 - A reproducible Base62 micro-benchmark reports local utility performance without claiming end-to-end throughput.
 - README contains setup, architecture, tech stack, structure, API, database, Redis, testing, performance, security, and future-work documentation.
 - `docs/PROJECT_REPORT.md` provides the complete technical report and interview study checklist.
+- `docs/QUALITY_REVIEW.md` records the final verification evidence, limitations, and portfolio sign-off.
 
 ## Files created
 
@@ -121,6 +122,7 @@
 - `CHECKPOINT.md`
 - `TODO.md`
 - `docs/PROJECT_REPORT.md`
+- `docs/QUALITY_REVIEW.md`
 
 ## How to run
 
@@ -163,4 +165,4 @@ curl.exe -X POST http://127.0.0.1:8000/api/v1/urls `
 
 ## Next stage
 
-The staged implementation and documentation are complete. Future work is listed in the README and project report.
+The staged implementation, documentation, and final quality review are complete. Future work is listed in the README, project report, and quality review.
