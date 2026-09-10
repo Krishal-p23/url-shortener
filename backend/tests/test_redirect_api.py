@@ -1,10 +1,12 @@
 from fastapi.testclient import TestClient
 
 from app.api.routes import redirects
+from app.cache.redis import CachedURL
 from app.main import app
 
 
 class FakeURL:
+    id = 1
     original_url = "https://example.com/destination"
 
 
@@ -18,7 +20,11 @@ async def cache_miss(short_code: str) -> None:
     return None
 
 
-async def cache_write(short_code: str, original_url: str) -> None:
+async def cache_write(short_code: str, url_id: int, original_url: str) -> None:
+    return None
+
+
+async def record_click(*args) -> None:
     return None
 
 
@@ -26,6 +32,7 @@ def test_redirects_active_short_code(monkeypatch) -> None:
     monkeypatch.setattr(redirects, "get_active_url_by_code", fake_lookup)
     monkeypatch.setattr(redirects, "get_cached_url", cache_miss)
     monkeypatch.setattr(redirects, "cache_url", cache_write)
+    monkeypatch.setattr(redirects, "record_click", record_click)
 
     with TestClient(app, follow_redirects=False) as client:
         response = client.get("/9IX")
@@ -34,8 +41,8 @@ def test_redirects_active_short_code(monkeypatch) -> None:
     assert response.headers["location"] == "https://example.com/destination"
 
 
-async def cache_hit(short_code: str) -> str:
-    return "https://cached.example.com/destination"
+async def cache_hit(short_code: str) -> CachedURL:
+    return CachedURL(1, "https://cached.example.com/destination")
 
 
 def test_redirect_uses_cached_url_without_database_lookup(monkeypatch) -> None:
@@ -44,6 +51,7 @@ def test_redirect_uses_cached_url_without_database_lookup(monkeypatch) -> None:
 
     monkeypatch.setattr(redirects, "get_cached_url", cache_hit)
     monkeypatch.setattr(redirects, "get_active_url_by_code", database_must_not_run)
+    monkeypatch.setattr(redirects, "record_click", record_click)
 
     with TestClient(app, follow_redirects=False) as client:
         response = client.get("/9IX")

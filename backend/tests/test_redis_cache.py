@@ -25,7 +25,10 @@ async def test_cache_helpers_store_and_read_with_ttl(monkeypatch) -> None:
     fake_redis = FakeRedis()
     monkeypatch.setattr(redis_cache, "redis_client", fake_redis)
 
-    await redis_cache.cache_url("9IX", "https://example.com")
+    await redis_cache.cache_url("9IX", 1, "https://example.com")
 
-    assert await redis_cache.get_cached_url("9IX") == "https://example.com"
+    cached = await redis_cache.get_cached_url("9IX")
+    assert cached is not None
+    assert cached.url_id == 1
+    assert cached.original_url == "https://example.com"
     assert fake_redis.expirations["url:9IX"] == 3600

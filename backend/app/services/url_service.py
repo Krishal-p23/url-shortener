@@ -1,10 +1,11 @@
 """Business logic for creating persistent short URLs."""
 
-from sqlalchemy import select, text
+from sqlalchemy import select, text, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.url import URL
+from app.models.click_event import ClickEvent
 from app.utils.base62 import encode_base62
 
 
@@ -54,3 +55,49 @@ async def get_active_url_by_code(
         )
     )
     return result.scalar_one_or_none()
+
+
+async def record_click(
+    session: AsyncSession,
+    url_id: int,
+    user_agent: str | None,
+    referrer: str | None,
+) -> None:
+    """Persist one click event and atomically increment the URL counter."""
+
+    session.add(
+        ClickEvent(
+            url_id=url_id,
+            user_agent=user_agent[:512] if user_agent else None,
+            referrer=referrer,
+        )
+    )
+    await session.execute(
+        update(URL)
+        .where(URL.id == url_id)
+        .values(click_count=URL.click_count + 1)
+    )
+    await session.commit()
+
+
+async def get_analytics(
+    session: AsyncSession,
+    short_code: str,
+    recent_limit: int = 20,
+) -> tuple[URL | None, list[ClickEvent]]:
+    """Return a URL mapping and its most recent click events."""
+
+    url_result = await session.execute(
+        select(URL).where(URL.short_code == short_code)
+    )
+    url = url_result.scalar_one_or_none()
+    if url is None:
+        return None, []
+
+    event_result = await session.execute(
+        select(ClickEvent)
+        .where(ClickEvent.url_id == url.id)
+        .order_by(ClickEvent.clicked_at.desc())
+        .limit(recent_limit)
+    )
+    return url, list(event_result.scalars().all())

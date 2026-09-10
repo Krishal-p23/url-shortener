@@ -6,7 +6,7 @@
 - [x] Stage 3: Add Base62 encoding and URL creation.
 - [x] Stage 4: Add short-code redirection.
 - [x] Stage 5: Add Redis caching and PostgreSQL fallback.
-- [ ] Stage 6: Add click analytics.
+- [x] Stage 6: Add click analytics.
 - [ ] Stage 7: Complete and harden the REST API.
 - [ ] Stage 8: Add the minimal React frontend and CORS wiring.
 - [ ] Stage 9: Expand behavior-focused tests.
@@ -43,3 +43,9 @@
 - Cached original URLs use a configurable one-hour default TTL.
 - Redis failures are logged and do not prevent PostgreSQL fallback redirects.
 - The live Redis service is not required for unit tests; a live integration check remains pending.
+
+## Stage 6 notes
+
+- Redirects record user-agent and referrer metadata without collecting IP addresses.
+- Analytics writes are transactional and best-effort for redirect availability.
+- `GET /api/v1/urls/{short_code}/analytics` returns totals and recent events.

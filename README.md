@@ -19,8 +19,9 @@ The current implementation includes:
 - `POST /api/v1/urls` for validated URL creation
 - `GET /{short_code}` for PostgreSQL-backed redirection
 - Redis cache-aside lookup with PostgreSQL fallback
+- Click event recording and analytics aggregation
 
-Click analytics and frontend functionality are intentionally scheduled for later checkpoints.
+Frontend functionality is intentionally scheduled for later checkpoints.
 
 ## Stage 1 Setup
 
@@ -67,3 +68,7 @@ The public redirect endpoint accepts a Base62 code at the root path, looks up an
 ## Stage 5 Redis Caching
 
 Redirects first check Redis using the key `url:{short_code}`. A cache hit returns the redirect without a PostgreSQL query. On a cache miss, the service queries PostgreSQL and stores the original URL in Redis for `REDIS_TTL_SECONDS` (one hour by default). Redis errors are logged and ignored, so PostgreSQL remains the source of truth and redirects continue to work when the cache is unavailable.
+
+## Stage 6 Click Analytics
+
+Each redirect records a `click_events` row with the URL ID, timestamp, user-agent, and referrer. The `urls.click_count` counter is incremented in the same transaction. Analytics are best-effort for the redirect path: an analytics write failure is rolled back and logged without blocking the redirect. `GET /api/v1/urls/{short_code}/analytics` returns the total counter and the 20 most recent events.

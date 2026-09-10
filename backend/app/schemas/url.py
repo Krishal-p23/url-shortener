@@ -20,3 +20,21 @@ class URLCreateResponse(BaseModel):
     short_url: str
     original_url: AnyHttpUrl
     created_at: datetime
+
+
+class ClickEventResponse(BaseModel):
+    """Public representation of one recent click event."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    clicked_at: datetime
+    user_agent: str | None
+    referrer: str | None
+
+
+class URLAnalyticsResponse(BaseModel):
+    """Aggregate and recent click information for a short URL."""
+
+    short_code: str
+    total_clicks: int
+    recent_clicks: list[ClickEventResponse]

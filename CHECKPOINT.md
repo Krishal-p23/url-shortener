@@ -1,10 +1,10 @@
-# CHECKPOINT 5 - COMPLETE
+# CHECKPOINT 6 - COMPLETE
 
 ## Current checkpoint
 
-- **Stage:** 5 - Redis Caching
+- **Stage:** 6 - Click Analytics
 - **Status:** Complete
-- **Suggested commit:** `feat: add Redis URL caching`
+- **Suggested commit:** `feat: add click analytics`
 
 ## Working features
 
@@ -32,6 +32,11 @@
 - Cached URLs use a configurable one-hour default TTL.
 - Redis read and write failures degrade gracefully to PostgreSQL behavior.
 - Redis connection pools close during application shutdown.
+- Redirects record click events with timestamp, user-agent, and referrer metadata.
+- The URL click counter increments in the same database transaction as the event.
+- `GET /api/v1/urls/{short_code}/analytics` returns total clicks and the 20 most recent events.
+- Analytics failures are rolled back and logged without blocking redirects.
+- Redis cache values include the URL ID so cache hits can record analytics without a database lookup.
 
 ## Files created
 
@@ -52,6 +57,7 @@
 - `backend/app/api/routes/redirects.py`
 - `backend/app/cache/__init__.py`
 - `backend/app/cache/redis.py`
+- `backend/app/api/routes/analytics.py`
 - `backend/app/api/__init__.py`
 - `backend/app/api/routes/__init__.py`
 - `backend/tests/__init__.py`
@@ -62,6 +68,8 @@
 - `backend/tests/test_url_service.py`
 - `backend/tests/test_redirect_api.py`
 - `backend/tests/test_redis_cache.py`
+- `backend/tests/test_analytics_api.py`
+- `backend/tests/test_analytics_service.py`
 - `backend/requirements.txt`
 - `backend/.env.example`
 - `backend/alembic.ini`
@@ -105,7 +113,7 @@ curl.exe -X POST http://127.0.0.1:8000/api/v1/urls `
 
 ## Known limitations
 
-- No click analytics or React frontend yet.
+- No React frontend yet.
 - CORS is represented in configuration but is not wired until the frontend stage.
 - A live PostgreSQL integration test is still pending.
 - URL creation requires PostgreSQL because the short-code source is the database sequence.
@@ -113,4 +121,4 @@ curl.exe -X POST http://127.0.0.1:8000/api/v1/urls `
 
 ## Next stage
 
-Stage 6 will add click analytics and redirect event recording.
+Stage 7 will complete and harden the REST API with consistent errors, deletion, and public URL retrieval.
