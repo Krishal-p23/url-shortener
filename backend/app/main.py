@@ -7,6 +7,7 @@ from fastapi import FastAPI
 
 from app.api.router import api_router
 from app.api.routes.redirects import router as redirects_router
+from app.cache.redis import close_redis
 from app.config import get_settings
 
 
@@ -31,6 +32,7 @@ async def lifespan(app: FastAPI):
         settings.environment,
     )
     yield
+    await close_redis()
     logging.getLogger(__name__).info("Application shutdown complete")
 
 

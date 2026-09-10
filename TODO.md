@@ -5,7 +5,7 @@
 - [x] Stage 2: Integrate PostgreSQL, SQLAlchemy, and Alembic.
 - [x] Stage 3: Add Base62 encoding and URL creation.
 - [x] Stage 4: Add short-code redirection.
-- [ ] Stage 5: Add Redis caching and PostgreSQL fallback.
+- [x] Stage 5: Add Redis caching and PostgreSQL fallback.
 - [ ] Stage 6: Add click analytics.
 - [ ] Stage 7: Complete and harden the REST API.
 - [ ] Stage 8: Add the minimal React frontend and CORS wiring.
@@ -36,3 +36,10 @@
 - `GET /{short_code}` returns a `307` redirect for active mappings.
 - Redirect lookup currently queries PostgreSQL directly.
 - Missing, inactive, and malformed codes return `404`.
+
+## Stage 5 notes
+
+- Redis keys use the `url:{short_code}` pattern.
+- Cached original URLs use a configurable one-hour default TTL.
+- Redis failures are logged and do not prevent PostgreSQL fallback redirects.
+- The live Redis service is not required for unit tests; a live integration check remains pending.

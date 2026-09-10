@@ -1,10 +1,10 @@
-# CHECKPOINT 4 - COMPLETE
+# CHECKPOINT 5 - COMPLETE
 
 ## Current checkpoint
 
-- **Stage:** 4 - Short URL Redirection
+- **Stage:** 5 - Redis Caching
 - **Status:** Complete
-- **Suggested commit:** `feat: add short URL redirection`
+- **Suggested commit:** `feat: add Redis URL caching`
 
 ## Working features
 
@@ -27,6 +27,11 @@
 - `GET /{short_code}` looks up active mappings in PostgreSQL and returns a `307` redirect.
 - Missing, inactive, and malformed short codes return `404`.
 - The lookup is isolated in a service so Redis caching can be inserted in Stage 5.
+- Redis cache helpers use the `url:{short_code}` key pattern.
+- Redirects check Redis before PostgreSQL and populate the cache after a database hit.
+- Cached URLs use a configurable one-hour default TTL.
+- Redis read and write failures degrade gracefully to PostgreSQL behavior.
+- Redis connection pools close during application shutdown.
 
 ## Files created
 
@@ -45,6 +50,8 @@
 - `backend/app/api/router.py`
 - `backend/app/api/routes/urls.py`
 - `backend/app/api/routes/redirects.py`
+- `backend/app/cache/__init__.py`
+- `backend/app/cache/redis.py`
 - `backend/app/api/__init__.py`
 - `backend/app/api/routes/__init__.py`
 - `backend/tests/__init__.py`
@@ -54,6 +61,7 @@
 - `backend/tests/test_url_api.py`
 - `backend/tests/test_url_service.py`
 - `backend/tests/test_redirect_api.py`
+- `backend/tests/test_redis_cache.py`
 - `backend/requirements.txt`
 - `backend/.env.example`
 - `backend/alembic.ini`
@@ -97,12 +105,12 @@ curl.exe -X POST http://127.0.0.1:8000/api/v1/urls `
 
 ## Known limitations
 
-- No Redis integration or caching yet.
-- No Redis caching, analytics, or React frontend yet.
+- No click analytics or React frontend yet.
 - CORS is represented in configuration but is not wired until the frontend stage.
 - A live PostgreSQL integration test is still pending.
 - URL creation requires PostgreSQL because the short-code source is the database sequence.
+- A live Redis integration test is still pending.
 
 ## Next stage
 
-Stage 5 will add Redis caching, TTLs, cache misses, and graceful PostgreSQL fallback.
+Stage 6 will add click analytics and redirect event recording.
