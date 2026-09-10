@@ -1,10 +1,10 @@
-# CHECKPOINT 9 - COMPLETE
+# CHECKPOINT 10 - COMPLETE
 
 ## Current checkpoint
 
-- **Stage:** 9 - Testing
+- **Stage:** 10 - Dockerization
 - **Status:** Complete
-- **Suggested commit:** `test: expand backend and frontend coverage`
+- **Suggested commit:** `feat: add Docker Compose deployment`
 
 ## Working features
 
@@ -46,6 +46,10 @@
 - FastAPI CORS allows configured comma-separated origins, including the Vite development origin.
 - Vitest and React Testing Library cover the frontend API client and shorten/analytics flow.
 - Backend regression tests cover Redis failures and CORS preflight behavior.
+- Docker Compose defines PostgreSQL, Redis, FastAPI, and React services.
+- PostgreSQL and Redis have health checks; backend startup waits for both.
+- The backend container runs Alembic migrations before starting Uvicorn.
+- PostgreSQL and Redis data persist in named Docker volumes.
 
 ## Files created
 
@@ -80,6 +84,11 @@
 - `frontend/src/test-setup.js`
 - `frontend/src/api.test.js`
 - `frontend/src/App.test.jsx`
+- `backend/Dockerfile`
+- `backend/.dockerignore`
+- `frontend/Dockerfile`
+- `frontend/.dockerignore`
+- `docker-compose.yml`
 - `backend/app/api/__init__.py`
 - `backend/app/api/routes/__init__.py`
 - `backend/tests/__init__.py`
@@ -136,11 +145,11 @@ curl.exe -X POST http://127.0.0.1:8000/api/v1/urls `
 
 ## Known limitations
 
-- No Docker deployment yet.
 - A live PostgreSQL integration test is still pending.
 - URL creation requires PostgreSQL because the short-code source is the database sequence.
 - Live PostgreSQL and Redis integration checks are still pending.
+- Docker image build was not run successfully in this environment because Docker Desktop's Linux engine was unavailable.
 
 ## Next stage
 
-Stage 10 will add Docker and Docker Compose setup for the backend, PostgreSQL, Redis, and frontend.
+Stage 11 will review performance, security, and scalability.

@@ -10,7 +10,7 @@
 - [x] Stage 7: Complete and harden the REST API.
 - [x] Stage 8: Add the minimal React frontend and CORS wiring.
 - [x] Stage 9: Expand behavior-focused tests.
-- [ ] Stage 10: Add Docker and Docker Compose setup.
+- [x] Stage 10: Add Docker and Docker Compose setup.
 - [ ] Stage 11: Review performance, security, and scalability.
 - [ ] Stage 12: Complete README and `docs/PROJECT_REPORT.md`.
 
@@ -68,3 +68,9 @@
 - Frontend tests run with `npm test` from `frontend`.
 - Backend tests run with `pytest` from `backend`.
 - Live PostgreSQL and Redis integration tests remain environment-dependent.
+
+## Stage 10 notes
+
+- Validate the stack with `docker compose config`.
+- Start it with `docker compose up --build` from the repository root.
+- Docker image build requires Docker Desktop's Linux engine to be running.

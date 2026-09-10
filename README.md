@@ -106,3 +106,21 @@ npm run dev
 ```
 
 The Vite client runs at <http://localhost:5173> and calls the FastAPI backend at `VITE_API_BASE_URL` (default `http://localhost:8000`). It supports URL creation, copying the generated link, loading analytics, and visible loading/error states. FastAPI allows the Vite origin through `ALLOWED_ORIGINS`.
+
+## Running with Docker
+
+Install and start Docker Desktop, then from the repository root run:
+
+```powershell
+docker compose up --build
+```
+
+Compose starts PostgreSQL and Redis first, waits for their health checks, runs the Alembic migration in the backend container, and then starts FastAPI and the React preview server. The API is available at <http://localhost:8000> and the frontend at <http://localhost:5173>.
+
+Stop the stack with:
+
+```powershell
+docker compose down
+```
+
+Add `-v` to remove the persisted PostgreSQL and Redis volumes when a clean local database is required.
