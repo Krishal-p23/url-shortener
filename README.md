@@ -6,7 +6,7 @@ This repository contains a portfolio project for a URL shortening service built 
 
 ## Current Stage
 
-Stage 1 establishes the backend application foundation:
+The current implementation includes:
 
 - FastAPI application with automatic OpenAPI documentation
 - Environment-backed configuration using Pydantic Settings
@@ -17,8 +17,9 @@ Stage 1 establishes the backend application foundation:
 - PostgreSQL URL and click-event schema with an Alembic migration
 - Base62 encoding and PostgreSQL-sequence-backed short-code generation
 - `POST /api/v1/urls` for validated URL creation
+- `GET /{short_code}` for PostgreSQL-backed redirection
 
-Redis, URL shortening, redirect handling, analytics endpoints, and frontend functionality are intentionally scheduled for later checkpoints.
+Redis caching, click analytics, and frontend functionality are intentionally scheduled for later checkpoints.
 
 ## Stage 1 Setup
 
@@ -32,7 +33,7 @@ python -m pip install -r requirements.txt
 Copy-Item .env.example .env
 ```
 
-For Stage 2, PostgreSQL must be running and the database named `url_shortener` must exist. Apply the migration with:
+For the database-backed stages, PostgreSQL must be running and the database named `url_shortener` must exist. Apply the migration with:
 
 ```powershell
 alembic upgrade head
@@ -46,7 +47,7 @@ uvicorn app.main:app --reload
 
 Check the service at <http://127.0.0.1:8000/health> or open the interactive API documentation at <http://127.0.0.1:8000/docs>.
 
-Run the Stage 1 test:
+Run the tests:
 
 ```powershell
 pytest
@@ -57,3 +58,7 @@ See [CHECKPOINT.md](CHECKPOINT.md) for the exact state and [TODO.md](TODO.md) fo
 ## Stage 2 Database Design
 
 PostgreSQL is the source of truth. The `urls` table stores each short-code mapping, its lifecycle state, timestamps, and a denormalized click counter. The `click_events` table stores lightweight analytics events linked to `urls.id` with a foreign key. The unique index on `urls.short_code` makes redirect lookup and collision prevention efficient; indexes on `click_events.url_id` and `clicked_at` support per-link and time-based analytics queries.
+
+## Stage 4 Redirection
+
+The public redirect endpoint accepts a Base62 code at the root path, looks up an active mapping in PostgreSQL, and returns a `307 Temporary Redirect`. Missing, inactive, or malformed codes return `404`. Redis is intentionally not involved until Stage 5; this stage establishes the PostgreSQL fallback behavior that caching will wrap.

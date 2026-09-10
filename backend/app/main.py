@@ -6,6 +6,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from app.api.router import api_router
+from app.api.routes.redirects import router as redirects_router
 from app.config import get_settings
 
 
@@ -48,3 +49,6 @@ async def health_check() -> dict[str, str]:
     """Return a lightweight process health response."""
 
     return {"status": "healthy", "environment": settings.environment}
+
+
+app.include_router(redirects_router)

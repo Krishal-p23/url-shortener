@@ -1,6 +1,6 @@
 """Business logic for creating persistent short URLs."""
 
-from sqlalchemy import text
+from sqlalchemy import select, text
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -39,3 +39,18 @@ async def create_url(
         return url
 
     raise RuntimeError("Unable to allocate a unique short code")
+
+
+async def get_active_url_by_code(
+    session: AsyncSession,
+    short_code: str,
+) -> URL | None:
+    """Return an active URL mapping for a short code, if one exists."""
+
+    result = await session.execute(
+        select(URL).where(
+            URL.short_code == short_code,
+            URL.is_active.is_(True),
+        )
+    )
+    return result.scalar_one_or_none()

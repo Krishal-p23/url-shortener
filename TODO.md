@@ -4,7 +4,7 @@
 
 - [x] Stage 2: Integrate PostgreSQL, SQLAlchemy, and Alembic.
 - [x] Stage 3: Add Base62 encoding and URL creation.
-- [ ] Stage 4: Add short-code redirection.
+- [x] Stage 4: Add short-code redirection.
 - [ ] Stage 5: Add Redis caching and PostgreSQL fallback.
 - [ ] Stage 6: Add click analytics.
 - [ ] Stage 7: Complete and harden the REST API.
@@ -30,3 +30,9 @@
 - `POST /api/v1/urls` validates HTTP and HTTPS URLs with Pydantic.
 - Short codes encode PostgreSQL sequence IDs with Base62 characters `0-9A-Za-z`.
 - The live URL creation flow requires PostgreSQL and the Stage 2 migration.
+
+## Stage 4 notes
+
+- `GET /{short_code}` returns a `307` redirect for active mappings.
+- Redirect lookup currently queries PostgreSQL directly.
+- Missing, inactive, and malformed codes return `404`.

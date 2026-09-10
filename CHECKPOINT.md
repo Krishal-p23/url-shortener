@@ -1,10 +1,10 @@
-# CHECKPOINT 3 - COMPLETE
+# CHECKPOINT 4 - COMPLETE
 
 ## Current checkpoint
 
-- **Stage:** 3 - Base62 URL Creation API
+- **Stage:** 4 - Short URL Redirection
 - **Status:** Complete
-- **Suggested commit:** `feat: add Base62 URL creation API`
+- **Suggested commit:** `feat: add short URL redirection`
 
 ## Working features
 
@@ -24,6 +24,9 @@
 - `POST /api/v1/urls` returns a `201` response containing the short code, short URL, original URL, and creation timestamp.
 - PostgreSQL sequence IDs are encoded as short codes, avoiding random collision coordination.
 - Unique-constraint retry behavior is covered at the service layer.
+- `GET /{short_code}` looks up active mappings in PostgreSQL and returns a `307` redirect.
+- Missing, inactive, and malformed short codes return `404`.
+- The lookup is isolated in a service so Redis caching can be inserted in Stage 5.
 
 ## Files created
 
@@ -41,6 +44,7 @@
 - `backend/app/services/url_service.py`
 - `backend/app/api/router.py`
 - `backend/app/api/routes/urls.py`
+- `backend/app/api/routes/redirects.py`
 - `backend/app/api/__init__.py`
 - `backend/app/api/routes/__init__.py`
 - `backend/tests/__init__.py`
@@ -49,6 +53,7 @@
 - `backend/tests/test_base62.py`
 - `backend/tests/test_url_api.py`
 - `backend/tests/test_url_service.py`
+- `backend/tests/test_redirect_api.py`
 - `backend/requirements.txt`
 - `backend/.env.example`
 - `backend/alembic.ini`
@@ -93,11 +98,11 @@ curl.exe -X POST http://127.0.0.1:8000/api/v1/urls `
 ## Known limitations
 
 - No Redis integration or caching yet.
-- No redirection, Redis caching, analytics, or React frontend yet.
+- No Redis caching, analytics, or React frontend yet.
 - CORS is represented in configuration but is not wired until the frontend stage.
 - A live PostgreSQL integration test is still pending.
 - URL creation requires PostgreSQL because the short-code source is the database sequence.
 
 ## Next stage
 
-Stage 4 will add short-code redirection, with PostgreSQL lookup and inactive-code handling.
+Stage 5 will add Redis caching, TTLs, cache misses, and graceful PostgreSQL fallback.
