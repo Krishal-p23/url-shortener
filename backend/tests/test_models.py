@@ -1,5 +1,3 @@
-from sqlalchemy import inspect
-
 from app.db.base import Base
 from app.models import ClickEvent, URL
 
@@ -16,7 +14,7 @@ def test_url_table_has_expected_columns_and_constraints() -> None:
         "click_count",
         "is_active",
     }
-    assert table.primary_key.columns.keys() == {"id"}
+    assert set(table.primary_key.columns.keys()) == {"id"}
     assert any(constraint.name is None for constraint in table.constraints)
     assert any(
         column.name == "short_code" and column.unique
