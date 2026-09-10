@@ -1,0 +1,57 @@
+# Hardware Distributed URL Shortener
+
+## Overview
+
+This repository contains a portfolio project for a URL shortening service built incrementally with Python, FastAPI, PostgreSQL, Redis, SQLAlchemy, Alembic, and React.
+
+## Current Stage
+
+Stage 1 establishes the backend application foundation:
+
+- FastAPI application with automatic OpenAPI documentation
+- Environment-backed configuration using Pydantic Settings
+- Basic startup and shutdown logging
+- `GET /health` health-check endpoint
+- Initial pytest setup
+- Async SQLAlchemy engine and session dependency
+- PostgreSQL URL and click-event schema with an Alembic migration
+
+Redis, URL shortening, redirect handling, analytics endpoints, and frontend functionality are intentionally scheduled for later checkpoints.
+
+## Stage 1 Setup
+
+From the `backend` directory, create and activate a virtual environment, then install dependencies:
+
+```powershell
+cd backend
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+Copy-Item .env.example .env
+```
+
+For Stage 2, PostgreSQL must be running and the database named `url_shortener` must exist. Apply the migration with:
+
+```powershell
+alembic upgrade head
+```
+
+Start the development server:
+
+```powershell
+uvicorn app.main:app --reload
+```
+
+Check the service at <http://127.0.0.1:8000/health> or open the interactive API documentation at <http://127.0.0.1:8000/docs>.
+
+Run the Stage 1 test:
+
+```powershell
+pytest
+```
+
+See [CHECKPOINT.md](CHECKPOINT.md) for the exact state and [TODO.md](TODO.md) for the remaining stages.
+
+## Stage 2 Database Design
+
+PostgreSQL is the source of truth. The `urls` table stores each short-code mapping, its lifecycle state, timestamps, and a denormalized click counter. The `click_events` table stores lightweight analytics events linked to `urls.id` with a foreign key. The unique index on `urls.short_code` makes redirect lookup and collision prevention efficient; indexes on `click_events.url_id` and `clicked_at` support per-link and time-based analytics queries.
