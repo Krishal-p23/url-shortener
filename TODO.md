@@ -7,7 +7,7 @@
 - [x] Stage 4: Add short-code redirection.
 - [x] Stage 5: Add Redis caching and PostgreSQL fallback.
 - [x] Stage 6: Add click analytics.
-- [ ] Stage 7: Complete and harden the REST API.
+- [x] Stage 7: Complete and harden the REST API.
 - [ ] Stage 8: Add the minimal React frontend and CORS wiring.
 - [ ] Stage 9: Expand behavior-focused tests.
 - [ ] Stage 10: Add Docker and Docker Compose setup.
@@ -49,3 +49,9 @@
 - Redirects record user-agent and referrer metadata without collecting IP addresses.
 - Analytics writes are transactional and best-effort for redirect availability.
 - `GET /api/v1/urls/{short_code}/analytics` returns totals and recent events.
+
+## Stage 7 notes
+
+- `GET /api/v1/urls/{short_code}` returns active URL details.
+- `DELETE /api/v1/urls/{short_code}` soft-deletes mappings and invalidates Redis.
+- Unexpected database errors use a safe `503` response.

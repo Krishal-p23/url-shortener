@@ -3,7 +3,9 @@
 import logging
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
+from sqlalchemy.exc import SQLAlchemyError
 
 from app.api.router import api_router
 from app.api.routes.redirects import router as redirects_router
@@ -44,6 +46,20 @@ app = FastAPI(
     lifespan=lifespan,
 )
 app.include_router(api_router)
+
+
+@app.exception_handler(SQLAlchemyError)
+async def database_error_handler(
+    request: Request,
+    exc: SQLAlchemyError,
+) -> JSONResponse:
+    """Return a stable public error without exposing database details."""
+
+    logging.getLogger(__name__).exception("Database request failure", exc_info=exc)
+    return JSONResponse(
+        status_code=503,
+        content={"detail": "Database service unavailable"},
+    )
 
 
 @app.get("/health", tags=["system"])

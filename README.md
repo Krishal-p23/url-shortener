@@ -20,6 +20,7 @@ The current implementation includes:
 - `GET /{short_code}` for PostgreSQL-backed redirection
 - Redis cache-aside lookup with PostgreSQL fallback
 - Click event recording and analytics aggregation
+- URL detail retrieval and soft deletion
 
 Frontend functionality is intentionally scheduled for later checkpoints.
 
@@ -72,3 +73,13 @@ Redirects first check Redis using the key `url:{short_code}`. A cache hit return
 ## Stage 6 Click Analytics
 
 Each redirect records a `click_events` row with the URL ID, timestamp, user-agent, and referrer. The `urls.click_count` counter is incremented in the same transaction. Analytics are best-effort for the redirect path: an analytics write failure is rolled back and logged without blocking the redirect. `GET /api/v1/urls/{short_code}/analytics` returns the total counter and the 20 most recent events.
+
+## REST API
+
+- `POST /api/v1/urls`: validate and create a short URL.
+- `GET /api/v1/urls/{short_code}`: return active URL details and click count.
+- `GET /api/v1/urls/{short_code}/analytics`: return aggregate and recent click data.
+- `DELETE /api/v1/urls/{short_code}`: soft-delete the mapping and invalidate its Redis entry.
+- `GET /{short_code}`: redirect to the active original URL.
+
+Deletion is intentionally a soft delete: it sets `is_active` to false, prevents future redirects, removes the cache entry, and preserves the URL row and click history for analytics. Unexpected database failures return a stable `503` response without exposing internal database details.

@@ -59,6 +59,15 @@ async def cache_url(short_code: str, url_id: int, original_url: str) -> None:
         logger.warning("Redis write failed for short code %s", short_code)
 
 
+async def delete_cached_url(short_code: str) -> None:
+    """Remove a URL from Redis when it is deactivated."""
+
+    try:
+        await redis_client.delete(cache_key(short_code))
+    except RedisError:
+        logger.warning("Redis delete failed for short code %s", short_code)
+
+
 async def close_redis() -> None:
     """Close the Redis connection pool during application shutdown."""
 

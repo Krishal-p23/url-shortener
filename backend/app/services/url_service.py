@@ -57,6 +57,21 @@ async def get_active_url_by_code(
     return result.scalar_one_or_none()
 
 
+async def deactivate_url(
+    session: AsyncSession,
+    short_code: str,
+) -> URL | None:
+    """Deactivate a URL mapping while preserving its analytics history."""
+
+    url = await get_active_url_by_code(session, short_code)
+    if url is None:
+        return None
+    url.is_active = False
+    await session.commit()
+    await session.refresh(url)
+    return url
+
+
 async def record_click(
     session: AsyncSession,
     url_id: int,

@@ -22,6 +22,14 @@ class URLCreateResponse(BaseModel):
     created_at: datetime
 
 
+class URLResponse(URLCreateResponse):
+    """Public representation of an active shortened URL."""
+
+    updated_at: datetime
+    click_count: int
+    is_active: bool
+
+
 class ClickEventResponse(BaseModel):
     """Public representation of one recent click event."""
 

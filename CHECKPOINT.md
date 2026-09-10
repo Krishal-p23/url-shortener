@@ -1,10 +1,10 @@
-# CHECKPOINT 6 - COMPLETE
+# CHECKPOINT 7 - COMPLETE
 
 ## Current checkpoint
 
-- **Stage:** 6 - Click Analytics
+- **Stage:** 7 - REST API Completion
 - **Status:** Complete
-- **Suggested commit:** `feat: add click analytics`
+- **Suggested commit:** `feat: complete REST API`
 
 ## Working features
 
@@ -37,6 +37,10 @@
 - `GET /api/v1/urls/{short_code}/analytics` returns total clicks and the 20 most recent events.
 - Analytics failures are rolled back and logged without blocking redirects.
 - Redis cache values include the URL ID so cache hits can record analytics without a database lookup.
+- `GET /api/v1/urls/{short_code}` returns active URL details and click count.
+- `DELETE /api/v1/urls/{short_code}` performs a soft delete and invalidates Redis.
+- API short-code validation consistently returns `404` for malformed or missing resources.
+- Unexpected SQLAlchemy failures return a safe `503` response without internal database details.
 
 ## Files created
 
@@ -58,6 +62,7 @@
 - `backend/app/cache/__init__.py`
 - `backend/app/cache/redis.py`
 - `backend/app/api/routes/analytics.py`
+- `backend/tests/test_rest_api.py`
 - `backend/app/api/__init__.py`
 - `backend/app/api/routes/__init__.py`
 - `backend/tests/__init__.py`
@@ -117,8 +122,8 @@ curl.exe -X POST http://127.0.0.1:8000/api/v1/urls `
 - CORS is represented in configuration but is not wired until the frontend stage.
 - A live PostgreSQL integration test is still pending.
 - URL creation requires PostgreSQL because the short-code source is the database sequence.
-- A live Redis integration test is still pending.
+- Live PostgreSQL and Redis integration checks are still pending.
 
 ## Next stage
 
-Stage 7 will complete and harden the REST API with consistent errors, deletion, and public URL retrieval.
+Stage 8 will add the minimal React frontend and CORS wiring.
