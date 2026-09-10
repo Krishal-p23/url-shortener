@@ -1,10 +1,10 @@
-# CHECKPOINT 8 - COMPLETE
+# CHECKPOINT 9 - COMPLETE
 
 ## Current checkpoint
 
-- **Stage:** 8 - Minimal React Frontend
+- **Stage:** 9 - Testing
 - **Status:** Complete
-- **Suggested commit:** `feat: add minimal React frontend`
+- **Suggested commit:** `test: expand backend and frontend coverage`
 
 ## Working features
 
@@ -44,6 +44,8 @@
 - React frontend supports URL shortening, copy-to-clipboard, analytics loading, errors, and loading states.
 - Vite frontend configuration uses `VITE_API_BASE_URL` with a localhost backend default.
 - FastAPI CORS allows configured comma-separated origins, including the Vite development origin.
+- Vitest and React Testing Library cover the frontend API client and shorten/analytics flow.
+- Backend regression tests cover Redis failures and CORS preflight behavior.
 
 ## Files created
 
@@ -75,6 +77,9 @@
 - `frontend/src/api.js`
 - `frontend/src/App.jsx`
 - `frontend/src/styles.css`
+- `frontend/src/test-setup.js`
+- `frontend/src/api.test.js`
+- `frontend/src/App.test.jsx`
 - `backend/app/api/__init__.py`
 - `backend/app/api/routes/__init__.py`
 - `backend/tests/__init__.py`
@@ -87,6 +92,7 @@
 - `backend/tests/test_redis_cache.py`
 - `backend/tests/test_analytics_api.py`
 - `backend/tests/test_analytics_service.py`
+- `backend/tests/test_cors.py`
 - `backend/requirements.txt`
 - `backend/.env.example`
 - `backend/alembic.ini`
@@ -137,4 +143,4 @@ curl.exe -X POST http://127.0.0.1:8000/api/v1/urls `
 
 ## Next stage
 
-Stage 9 will expand behavior-focused tests, including frontend and integration coverage.
+Stage 10 will add Docker and Docker Compose setup for the backend, PostgreSQL, Redis, and frontend.

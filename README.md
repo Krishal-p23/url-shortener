@@ -57,6 +57,16 @@ Run the tests:
 pytest
 ```
 
+Run frontend tests and build:
+
+```powershell
+cd ..\frontend
+npm test
+npm run build
+```
+
+The test suite covers Base62, URL validation and creation, redirect cache behavior, Redis degradation, analytics, soft deletion, safe API errors, CORS preflight, and the frontend shortening/analytics flow.
+
 See [CHECKPOINT.md](CHECKPOINT.md) for the exact state and [TODO.md](TODO.md) for the remaining stages.
 
 ## Stage 2 Database Design

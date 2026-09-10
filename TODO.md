@@ -9,7 +9,7 @@
 - [x] Stage 6: Add click analytics.
 - [x] Stage 7: Complete and harden the REST API.
 - [x] Stage 8: Add the minimal React frontend and CORS wiring.
-- [ ] Stage 9: Expand behavior-focused tests.
+- [x] Stage 9: Expand behavior-focused tests.
 - [ ] Stage 10: Add Docker and Docker Compose setup.
 - [ ] Stage 11: Review performance, security, and scalability.
 - [ ] Stage 12: Complete README and `docs/PROJECT_REPORT.md`.
@@ -62,3 +62,9 @@
 - Set `VITE_API_BASE_URL` when the backend is not at `http://localhost:8000`.
 - The frontend production build passes with `npm run build`.
 - CORS preflight for `http://localhost:5173` passes.
+
+## Stage 9 notes
+
+- Frontend tests run with `npm test` from `frontend`.
+- Backend tests run with `pytest` from `backend`.
+- Live PostgreSQL and Redis integration tests remain environment-dependent.
